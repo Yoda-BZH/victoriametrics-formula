@@ -1,0 +1,18 @@
+# -*- coding: utf-8 -*-
+# vim: ft=yaml
+#
+# Set default values.
+---
+values:
+  pkg:
+    name: victoriametrics
+  rootgroup: root
+  config: '/etc/victoriametrics'
+  service:
+    name: victoriametrics
+  subcomponent:
+    config: '/etc/victoriametrics-subcomponent-formula.conf'
+  # Just here for testing
+  added_in_defaults: defaults_value
+  winner: defaults
+...
