@@ -1,0 +1,17 @@
+#
+# This file managed by Salt, do not edit
+#
+{% for section, sectioncontent in config.items() %}
+  {%- if section not in ['enabled', 'status', 'dropin'] %}
+[{{ section }}]
+    {%- for key, value in sectioncontent.items() %}
+      {%- if value is list %}
+        {%- for v in value %}
+{{ key }}={{ v }}
+        {%- endfor %}
+      {%- else %}
+{{ key }}={{ value }}
+      {%- endif %}
+    {%- endfor %}
+  {%- endif %}
+{% endfor -%}

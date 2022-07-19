@@ -3,17 +3,13 @@
 
 {#- Get the `tplroot` from `tpldir` #}
 {%- set tplroot = tpldir.split('/')[0] %}
-{%- set sls_package_install = tplroot ~ '.package.install' %}
 {%- from tplroot ~ "/map.jinja" import mapdata as victoriametrics with context %}
 
 include:
-  #- .file
-{% if victoriametrics.type == "cluster" %}
-  - .vminsert
-  - .vmselect
-  - .vmstorage
-{% elif victoriametrics.type == "single" %}
-  - .victoriametrics
+{% if victoriametrics.type == "single" %}
+  - .single
+{% elif victoriametrics.type == "cluster" %}
+  - .cluster
 {% elif victoriametrics.type == "agent" %}
-  - .vmagent
+  - .agent
 {% endif %}

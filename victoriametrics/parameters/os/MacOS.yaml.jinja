@@ -17,4 +17,5 @@
 ---
 values:
   rootgroup: {{ salt['cmd.run']("stat -f '%Sg' /dev/console") }}
+  vm_os: darwin
 ...

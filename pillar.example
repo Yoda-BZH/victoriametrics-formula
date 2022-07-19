@@ -5,6 +5,10 @@ victoriametrics:
   lookup:
     master: template-master
 
+  # the version is used for the archive installation method.
+  # It refers to the github version.
+  version: v1.79.0
+
   # Using bash package and udev service as an example. This allows us to
   # test the template formula itself. You should set these parameters to
   # examples that make sense in the contexto of the formula you're writing.

@@ -13,6 +13,6 @@
 ---
 values:
   pkg:
-    name: victoriametrics-debian
+    name: victoria-metrics
   config: /etc/victoriametrics.d/custom.conf
 ...

@@ -6,8 +6,12 @@
 values:
   pkg:
     name: victoriametrics
+  version: v1.79.0
+  type: single
+  install: package
   rootgroup: root
   config: '/etc/victoriametrics'
+  vm_os: linux
   service:
     name: victoriametrics
   subcomponent:
@@ -15,4 +19,19 @@ values:
   # Just here for testing
   added_in_defaults: defaults_value
   winner: defaults
+  archive:
+    type: "oss"
+    extract_directory: /var/cache/victoriametrics
+
+  bindir: /usr/local/bin
+  victoriametrics:
+    args: "-storageDataPath=/var/lib/victoria-metrics/storage/"
+  storages:
+    nodes: []
+  vminsert:
+    args: ""
+  vmstorage:
+    args: "-storageDataPath=/var/lib/victoria-metrics/storage/"
+  vmselect:
+    args: ""
 ...
