@@ -9,6 +9,59 @@ victoriametrics:
   # It refers to the github version.
   version: v1.79.0
 
+  # type: single|culster
+  #   single: the victoria-metrics service is installed
+  #   cluster: the cluster version is installed (vminsert, vmselect, vmstorage,
+  #          vmauth (if enabled)
+  type: single
+
+  # install: archive|package
+  #   archive: download the packages from github
+  #   package: install the os package
+  install: archive
+
+  # configuration for the archive installation
+  archive:
+    # type: oss|enterprise
+    #   oss: install the free version
+    #   enterprise: install the enterprise version
+    type: oss
+
+    # extract_directory: /path/to/a/directory
+    #   extract the archives in the specified directory
+    extract_directory: /var/cache/victoriametrics
+
+  # bindir: /path/to/bin/dir
+  #   Directory to store all binaries.
+  #   The directory should be in your $PATH
+  bindir: /usr/local/bin
+
+  # some information about the storage servers
+  storages:
+    # nodes: [list of storage servers]
+    #   A list of storage servers, ip:port format
+    nodes: ['127.0.0.1:8424']
+    # nodes:
+    #   - 192.2.0.1:8424
+    #   - 192.2.0.2:8424
+    #   - 192.2.0.3:8424
+
+
+  # Configuration for the "single" version
+  victoriametrics:
+    # a dict passed to the command line
+    # Each entry is converted to an option
+    # Use the value ~ for key-only options
+    # ex:
+    #   foo: bar
+    #   baz: baz
+    #   noValue: ~
+    # is converted to:
+    #   /path/to/victoria-metrics -foo=bar -baz=baz -noValue
+    # See victoria-metrics -h for all available options
+    args:
+      storageDataPath: /var/lib/victoria-metrics/storage
+
   # Using bash package and udev service as an example. This allows us to
   # test the template formula itself. You should set these parameters to
   # examples that make sense in the contexto of the formula you're writing.

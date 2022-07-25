@@ -14,5 +14,5 @@
 values:
   pkg:
     name: victoriametrics-redhat
-  config: /etc/victoriametrics.conf
+  #config: /etc/victoriametrics.conf
 ...

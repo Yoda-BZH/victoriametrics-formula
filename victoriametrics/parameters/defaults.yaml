@@ -19,19 +19,40 @@ values:
   # Just here for testing
   added_in_defaults: defaults_value
   winner: defaults
+
   archive:
     type: "oss"
     extract_directory: /var/cache/victoriametrics
 
   bindir: /usr/local/bin
-  victoriametrics:
-    args: "-storageDataPath=/var/lib/victoria-metrics/storage/"
+
   storages:
     nodes: []
+
+  # services
+
+  ## single
+  victoriametrics:
+    args:
+      storageDataPath: /var/lib/victoria-metrics/storage
+
+  ## cluster
   vminsert:
-    args: ""
+    enabled: true
+    args: {}
   vmstorage:
-    args: "-storageDataPath=/var/lib/victoria-metrics/storage/"
+    enabled: true
+    args:
+      storageDataPath: /var/lib/victoria-metrics/storage
   vmselect:
-    args: ""
+    enabled: true
+    args: {}
+  vmagent:
+    enabled: false
+    args: {}
+  vmauth:
+    enabled: false
+    args:
+      auth.config: /etc/victoriametrics/auth-config.yml
+    config: {}
 ...

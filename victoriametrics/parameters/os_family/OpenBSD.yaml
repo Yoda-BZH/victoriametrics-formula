@@ -13,4 +13,5 @@
 ---
 values:
   rootgroup: wheel
+  vm_os: openbsd
 ...

@@ -9,12 +9,11 @@
 
 #include:
 #  - {{ sls_package_install }}
-{% set storageNodes = victoriametrics.storages.nodes or ['127.0.0.1:8401'] %}
-{% set vmselect_args = victoriametrics.vmselect.args %}
-{% do vmselect_args.update({"storageNode": storageNodes|join(",")}) %}
+{% set vmagent_args = victoriametrics.vmagent.args %}
+
 
 {% set args = [] %}
-{% for k, v in vmselect_args.items() %}
+{% for k, v in vmagent_args.items() %}
 {%   if v != None %}
 {%     do args.append("-" ~ k ~ "=" ~ v) %}
 {%   else %}
@@ -23,10 +22,10 @@
 {% endfor %}
 {% set args = args|join(" ") %}
 
-victoriametrics-vmselect-config-file-file-managed:
+victoriametrics-vmagent-config-file-file-managed:
   file.managed:
     #- name: {{ victoriametrics.config }}
-    - name: /etc/default/vmselect
+    - name: /etc/default/vmagent
     - source: {{ files_switch(['default.sh'],
                               lookup='victoriametrics-config-file-file-managed'
                  )

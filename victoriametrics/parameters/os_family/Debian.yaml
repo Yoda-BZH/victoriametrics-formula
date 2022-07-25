@@ -14,5 +14,5 @@
 values:
   pkg:
     name: victoria-metrics
-  config: /etc/victoriametrics.d/custom.conf
+  #config: /etc/victoriametrics.d/custom.conf
 ...

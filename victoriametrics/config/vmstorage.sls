@@ -12,6 +12,16 @@
 {% set vmstorage_args = victoriametrics.vmstorage.args %}
 
 
+{% set args = [] %}
+{% for k, v in vmstorage_args.items() %}
+{%   if v != None %}
+{%     do args.append("-" ~ k ~ "=" ~ v) %}
+{%   else %}
+{%     do args.append("-" ~ k) %}
+{%   endif %}
+{% endfor %}
+{% set args = args|join(" ") %}
+
 victoriametrics-vmstorage-config-file-file-managed:
   file.managed:
     #- name: {{ victoriametrics.config }}
@@ -28,6 +38,6 @@ victoriametrics-vmstorage-config-file-file-managed:
     #- require:
     #  - sls: {{ sls_package_install }}
     - context:
-        args: {{ vmstorage_args | json }}
+        args: {{ args | json }}
     #- watch_in:
     #  - cmd: reload_systemd_configuration

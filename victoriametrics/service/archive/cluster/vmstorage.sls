@@ -35,8 +35,9 @@
 
 {% set unit = "vmstorage" %}
 {% set unittype = "service" %}
-{% set unit_status = "start" %}
-{% set activation_status = "enable" %}
+{% set unit_status = "start" if victoriametrics.vmstorage.enabled else "stop" %}
+{% set activation_status = "enable" if victoriametrics.vmstorage.enabled else "disabled" %}
+{% set service_status = "running" if victoriametrics.vmstorage.enabled else "dead" %}
 
 victoriametrics_systemd_units_file_{{ unit }}_{{ unittype }}:
   file.managed:
@@ -71,3 +72,8 @@ victoriametrics_systemd_units_activate_or_deactivate_{{ unit }}_{{ unittype }}:
 #    - enable: True
 #    #- watch:
 #    #  - sls: {{ sls_config_file }}
+
+
+victoriametrics_service_{{ unit }}:
+  service.{{ service_status }}:
+     - name: {{ unit }}

@@ -13,3 +13,6 @@ include:
 {% elif victoriametrics.type == "agent" %}
   - .agent
 {% endif %}
+{% if victoriametrics.vmauth.enabled %}
+  - .utils.vmauth
+{% endif %}

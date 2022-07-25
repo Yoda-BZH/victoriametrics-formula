@@ -9,8 +9,19 @@
 
 #include:
 #  - {{ sls_package_install }}
+{% set storageNodes = victoriametrics.storages.nodes or ['127.0.0.1:8400'] %}
 {% set vminsert_args = victoriametrics.vminsert.args %}
-{% set vminsert_args = vminsert_args ~ " -storageNode=" ~ victoriametrics.storages.nodes|join(",") %}
+{% do vminsert_args.update({"storageNode": storageNodes|join(",")}) %}
+
+{% set args = [] %}
+{% for k, v in vminsert_args.items() %}
+{%   if v != None %}
+{%     do args.append("-" ~ k ~ "=" ~ v) %}
+{%   else %}
+{%     do args.append("-" ~ k) %}
+{%   endif %}
+{% endfor %}
+{% set args = args|join(" ") %}
 
 victoriametrics-vminsert-config-file-file-managed:
   file.managed:
@@ -28,6 +39,6 @@ victoriametrics-vminsert-config-file-file-managed:
     #- require:
     #  - sls: {{ sls_package_install }}
     - context:
-        args: {{ vminsert_args | json }}
+        args: {{ args | json }}
     #- watch_in:
     #  - cmd: reload_systemd_configuration

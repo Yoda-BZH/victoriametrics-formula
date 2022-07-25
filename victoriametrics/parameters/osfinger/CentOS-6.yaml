@@ -14,5 +14,5 @@
 values:
   pkg:
     name: victoriametrics-centos-6
-  config: /etc/victoriametrics.d/custom-centos-6.conf
+  #config: /etc/victoriametrics.d/custom-centos-6.conf
 ...

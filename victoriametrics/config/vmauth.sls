@@ -9,12 +9,10 @@
 
 #include:
 #  - {{ sls_package_install }}
-{% set storageNodes = victoriametrics.storages.nodes or ['127.0.0.1:8401'] %}
-{% set vmselect_args = victoriametrics.vmselect.args %}
-{% do vmselect_args.update({"storageNode": storageNodes|join(",")}) %}
+{% set vmauth_args = victoriametrics.vmauth.args %}
 
 {% set args = [] %}
-{% for k, v in vmselect_args.items() %}
+{% for k, v in vmauth_args.items() %}
 {%   if v != None %}
 {%     do args.append("-" ~ k ~ "=" ~ v) %}
 {%   else %}
@@ -23,10 +21,10 @@
 {% endfor %}
 {% set args = args|join(" ") %}
 
-victoriametrics-vmselect-config-file-file-managed:
+victoriametrics-vmauth-config-file-file-managed:
   file.managed:
     #- name: {{ victoriametrics.config }}
-    - name: /etc/default/vmselect
+    - name: /etc/default/vmauth
     - source: {{ files_switch(['default.sh'],
                               lookup='victoriametrics-config-file-file-managed'
                  )
@@ -42,3 +40,10 @@ victoriametrics-vmselect-config-file-file-managed:
         args: {{ args | json }}
     #- watch_in:
     #  - cmd: reload_systemd_configuration
+
+victoriametrics-vmauth-authconfig-file:
+  file.serialize:
+    - name: /etc/victoriametrics/auth-config.yml
+    - formatter: yaml
+    - mode: 644
+    - dataset: {{ victoriametrics.vmauth.config | json }}

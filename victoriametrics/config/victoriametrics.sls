@@ -11,6 +11,17 @@
 #  - {{ sls_package_install }}
 {% set victoriametrics_args = victoriametrics.victoriametrics.args %}
 
+
+{% set args = [] %}
+{% for k, v in vmselect_args.items() %}
+{%   if v != None %}
+{%     do args.append("-" ~ k ~ "=" ~ v) %}
+{%   else %}
+{%     do args.append("-" ~ k) %}
+{%   endif %}
+{% endfor %}
+{% set args = args|join(" ") %}
+
 victoriametrics-victoria-metrics-config-file-file-managed:
   file.managed:
     #- name: {{ victoriametrics.config }}
@@ -27,6 +38,6 @@ victoriametrics-victoria-metrics-config-file-file-managed:
     #- require:
     #  - sls: {{ sls_package_install }}
     - context:
-        args: {{ victoriametrics_args | json }}
+        args: {{ args | json }}
     #- watch_in:
     #  - cmd: reload_systemd_configuration

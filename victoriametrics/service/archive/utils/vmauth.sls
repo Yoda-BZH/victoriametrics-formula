@@ -11,7 +11,7 @@
 
 {% set unitconfig = {
   'Unit': {
-    'Description': 'High-performance, cost-effective and scalable time series database, long-term remote storage for Prometheus, vminsert service',
+    'Description': 'High-performance, cost-effective and scalable time series database, long-term remote storage for Prometheus, vmauth service',
     'Documentation': 'https://victoriametrics.github.io/',
     'After': 'network.target',
   },
@@ -24,8 +24,8 @@
     'StartLimitInterval': '0',
     'Restart': 'on-failure',
     'RestartSec': '1',
-    'EnvironmentFile': '/etc/default/vminsert',
-    'ExecStart': victoriametrics.bindir ~ '/vminsert $ARGS',
+    'EnvironmentFile': '/etc/default/vmauth',
+    'ExecStart': victoriametrics.bindir ~ '/vmauth $ARGS',
   },
   'Install': {
     'WantedBy': 'multi-user.target',
@@ -33,11 +33,11 @@
 } %}
 
 
-{% set unit = "vminsert" %}
+{% set unit = "vmauth" %}
 {% set unittype = "service" %}
-{% set unit_status = "enable" if victoriametrics.vminsert.enabled else "disable" %}
-{% set activation_status = "start" if victoriametrics.vminsert.enabled else "stop" %}
-{% set service_status = "running" if victoriametrics.vminsert.enabled else "dead" %}
+{% set unit_status = "start" if victoriametrics.vmauth.enabled else "stop" %}
+{% set activation_status = "enable" if victoriametrics.vmauth.enabled else "disabled" %}
+{% set service_status = "running" if victoriametrics.vmauth.enabled else "dead" %}
 
 victoriametrics_systemd_units_file_{{ unit }}_{{ unittype }}:
   file.managed:
@@ -48,6 +48,7 @@ victoriametrics_systemd_units_file_{{ unit }}_{{ unittype }}:
         config: {{ unitconfig|json }}
     - watch:
       - file: victoriametrics-{{ unit }}-config-file-file-managed
+      - file: victoriametrics-{{ unit }}-authconfig-file
     - watch_in:
       - cmd: reload_systemd_configuration
 
@@ -65,6 +66,14 @@ victoriametrics_systemd_units_activate_or_deactivate_{{ unit }}_{{ unittype }}:
       - cmd: reload_systemd_configuration
     - watch:
       - cmd: reload_systemd_configuration
+
+#victoriametrics-service-vmauth-running-service-running:
+#  service.running:
+#    - name: vmauth
+#    - enable: True
+#    #- watch:
+#    #  - sls: {{ sls_config_file }}
+
 
 victoriametrics_service_{{ unit }}:
   service.{{ service_status }}:

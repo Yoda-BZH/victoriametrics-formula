@@ -8,6 +8,7 @@
 
 include:
   #- .file
+  - .directory
 {% if victoriametrics.type == "cluster" %}
   - .vminsert
   - .vmselect
@@ -16,4 +17,7 @@ include:
   - .victoriametrics
 {% elif victoriametrics.type == "agent" %}
   - .vmagent
+{% endif %}
+{% if victoriametrics.vmauth.enabled %}
+  - .vmauth
 {% endif %}
