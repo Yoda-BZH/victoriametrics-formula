@@ -17,7 +17,7 @@
   },
   'Service': {
     'Type': 'simple',
-    'User': '_victoria-metrics',
+    'User': victoriametrics.user,
     'LimitNOFILE': '65536',
     'LimitNPROC': '32000',
     'StartLimitBurst': '5',

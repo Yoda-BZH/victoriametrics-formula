@@ -12,6 +12,6 @@ include:
   - .agent.clean
 
 
-_victoria-metrics:
+victoriametrics_remove_user_{{ victoriametrics.user }}:
   user.absent:
-    - name: _victoria-metrics
+    - name: {{ victoriametrics.user }}
