@@ -31,6 +31,9 @@ values:
 
   bindir: /usr/local/bin
 
+  backup:
+    destination: fs:///var/backup/victoriametrics
+
   storages:
     nodes: []
 
