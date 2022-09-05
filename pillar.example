@@ -37,6 +37,7 @@ victoriametrics:
   bindir: /usr/local/bin
 
   # some information about the storage servers
+  # Common to both single and cluster
   storages:
     # nodes: [list of storage servers]
     #   A list of storage servers, ip:port format
@@ -61,6 +62,99 @@ victoriametrics:
     # See victoria-metrics -h for all available options
     args:
       storageDataPath: /var/lib/victoria-metrics/storage
+
+
+  ## Configurations for the "cluster" version:
+  ## * vmagent
+  ## * vmauth
+  ## * vminsert
+  ## * vmselect
+  ## * vmstorage
+
+  vmagent:
+    # a dict passed to the command line
+    # Each entry is converted to an option
+    # Use the value ~ for key-only options
+    # ex:
+    #   foo: bar
+    #   baz: baz
+    #   noValue: ~
+    # is converted to:
+    #   /path/to/vmagent -foo=bar -baz=baz -noValue
+    # See vmagent -h for all available options
+    args: {}
+
+  vmauth:
+    # a dict passed to the command line
+    # Each entry is converted to an option
+    # Use the value ~ for key-only options
+    # ex:
+    #   foo: bar
+    #   baz: baz
+    #   noValue: ~
+    # is converted to:
+    #   /path/to/vmauth -foo=bar -baz=baz -noValue
+    # See vmauth -h for all available options
+    args:
+      auth.config: /etc/victoriametrics/auth-config.yml
+
+    # Configuration for auth-config.yml
+    # See https://docs.victoriametrics.com/vmauth.html#auth-config
+    config:
+      users:
+        # Requests with the 'Authorization: Bearer XXXX' and 'Authorization: Token XXXX'
+        # header are proxied to http://localhost:8428 .
+        # For example, http://vmauth:8427/api/v1/query is proxied to http://localhost:8428/api/v1/query
+        # Requests with the Basic Auth username=XXXX are proxied to http://localhost:8428 as well.
+        - bearer_token: "XXXX"
+          url_prefix: "http://localhost:8428"
+
+        # Requests with the 'Authorization: Bearer YYY' header are proxied to http://localhost:8428 ,
+        # The `X-Scope-OrgID: foobar` http header is added to every proxied request.
+        # For example, http://vmauth:8427/api/v1/query is proxied to http://localhost:8428/api/v1/query
+        - bearer_token: "YYY"
+          url_prefix: "http://localhost:8428"
+          headers:
+          - "X-Scope-OrgID: foobar"
+
+  vminsert:
+    # a dict passed to the command line
+    # Each entry is converted to an option
+    # Use the value ~ for key-only options
+    # ex:
+    #   foo: bar
+    #   baz: baz
+    #   noValue: ~
+    # is converted to:
+    #   /path/to/vminsert -foo=bar -baz=baz -noValue
+    # See vminsert -h for all available options
+    args: {}
+
+  vmselect:
+    # a dict passed to the command line
+    # Each entry is converted to an option
+    # Use the value ~ for key-only options
+    # ex:
+    #   foo: bar
+    #   baz: baz
+    #   noValue: ~
+    # is converted to:
+    #   /path/to/vmselect -foo=bar -baz=baz -noValue
+    # See vmselect -h for all available options
+    args: {}
+
+  vmstorage:
+    # a dict passed to the command line
+    # Each entry is converted to an option
+    # Use the value ~ for key-only options
+    # ex:
+    #   foo: bar
+    #   baz: baz
+    #   noValue: ~
+    # is converted to:
+    #   /path/to/vmstorage -foo=bar -baz=baz -noValue
+    # See vmstorage -h for all available options
+    args: {}
 
   # Using bash package and udev service as an example. This allows us to
   # test the template formula itself. You should set these parameters to
