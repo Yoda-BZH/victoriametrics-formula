@@ -13,7 +13,7 @@
 
 
 {% set args = [] %}
-{% for k, v in vmselect_args.items() %}
+{% for k, v in victoriametrics_args.items() %}
 {%   if v != None %}
 {%     do args.append("-" ~ k ~ "=" ~ v) %}
 {%   else %}
